@@ -1,0 +1,28 @@
+# Core data analysis and visualization
+pandas
+numpy
+
+# Plotting
+plotly
+
+# Web app framework
+streamlit
+
+# Machine learning
+scikit-learn
+
+# Data processing
+openpyxl
+
+# AI/ML packages
+openai
+huggingface_hub
+
+# Statistical modeling
+statsmodels
+
+# Additional utilities
+python-dateutil
+
+# Environment variables
+python-dotenv
