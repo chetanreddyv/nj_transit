@@ -4,6 +4,7 @@
 
 **First Place - HackRU Fall 2024 (NJ Transit Track)**
 **https://devpost.com/software/ontrack-nj-transit**
+Deployed App
 **https://onnjtransit.streamlit.app**
 
 ## 📱 Overview
