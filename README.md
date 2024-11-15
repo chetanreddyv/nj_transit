@@ -34,7 +34,7 @@ Enhancing NJ Transit passenger experience with AI and machine learning:
 1. Clone the repo:
    ```bash
    git clone https://github.com/yourusername/nj_transit.git
-   cd nj_transit_data_ru_hack
+   cd nj_transit
    ```
 2. Install dependencies:
    ```bash
