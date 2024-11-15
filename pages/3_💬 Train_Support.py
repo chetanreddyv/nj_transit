@@ -22,10 +22,9 @@ st.set_page_config(
 # Cache model initialization
 @st.cache_resource
 def initialize_model():
-    load_dotenv()
-    api_key = os.getenv('GOOGLE_API_KEY') or os.environ.get("GEMINI_API_KEY")
+    api_key = st.secrets["GOOGLE_API_KEY"]
     if not api_key:
-        raise ValueError("API key not found in environment variables")
+        raise ValueError("API key not found in Streamlit secrets")
     
     genai.configure(api_key=api_key)
     

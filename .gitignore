@@ -1,3 +1,4 @@
 # Ignore virtual environment directories
 nj/
 .env
+.streamlit/secrets.toml
