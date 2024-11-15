@@ -51,7 +51,7 @@ Enhancing NJ Transit passenger experience with AI and machine learning:
 ## 📁 Project Structure
 
 ```
-nj_transit_data_ru_hack/
+nj_transit/
 ├── ON_NJ_Transit.py
 ├── pages/
 ├── assets/
@@ -79,8 +79,8 @@ nj_transit_data_ru_hack/
 
 ## 👥 Team
 
-- **Vasant Saladi**
 - **Chetan Valluru**
+- **Vasant Saladi**
 
 ## 🏆 Awards & Recognition
 
