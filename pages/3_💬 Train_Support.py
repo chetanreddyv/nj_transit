@@ -4,26 +4,52 @@ import json
 from datetime import datetime
 import os
 from dotenv import load_dotenv
-from openai import OpenAI
+import google.generativeai as genai
 
-# Page configuration
+# Page configuration with updated parameter
 st.set_page_config(
     page_title="NJ Transit Support",
     page_icon="🚂",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://www.njtransit.com/',
+        'Report a bug': None,
+        'About': 'NJ Transit Support Assistant'
+    }
 )
 
-# Load environment variables
-load_dotenv()
+# Cache model initialization
+@st.cache_resource
+def initialize_model():
+    load_dotenv()
+    api_key = os.getenv('GOOGLE_API_KEY') or os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        raise ValueError("API key not found in environment variables")
+    
+    genai.configure(api_key=api_key)
+    
+    generation_config = {
+        "temperature": 0.7,  # Lower temperature for faster responses
+        "top_p": 0.9,
+        "top_k": 30,
+        "max_output_tokens": 250,  # Reduced token limit
+        "response_mime_type": "text/plain",
+    }
+    
+    return genai.GenerativeModel(
+        model_name="gemini-1.5-flash",
+        generation_config=generation_config
+    )
 
-# Initialize OpenAI client
-client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+# Initialize model once
+model = initialize_model()
 
 # Custom CSS for responsive design
 st.markdown("""
     <style>
     .responsive-title {
-        font-size: calc(1.5rem + 1.5vw);
+        font-size: clamp(1.5rem, 1.5vw + 1rem, 3rem);
         font-weight: bold;
         line-height: 1.2;
         padding-top: 0.5rem;
@@ -67,15 +93,13 @@ logo = Image.open(logo_path)
 col1, col2 = st.columns([1, 3])
 
 with col1:
-    st.image(logo, use_column_width=True)
+    st.image(logo, use_container_width=True)
 
 with col2:
     st.markdown('<p class="responsive-title">NJ Transit Support Assistant 💬</p>', unsafe_allow_html=True)
 
 # Add a divider
 st.markdown("<hr>", unsafe_allow_html=True)
-
-
 
 # Load FAQs data
 def load_faqs():
@@ -110,50 +134,73 @@ def create_context_from_faqs(faqs):
     context += "\nPlease use this information to answer questions. If a question isn't covered in the FAQs, you can provide general help but mention that the information is not from the official FAQs."
     return context
 
+# Additional transit data
+TRANSIT_INFO = """
+NJ TRANSIT is New Jersey's public transportation corporation. 
+Key Services:
+- Rail: 12 lines serving 165 stations
+- Bus: Over 250 routes
+- Light Rail: 3 systems (Hudson-Bergen, Newark, River LINE)
+
+Common Rules:
+- No eating/drinking on vehicles
+- Quiet cars available on trains
+- Off-peak fares available
+- Monthly passes available
+- Mobile ticketing through NJ TRANSIT app
+- Service animals allowed
+- Bicycles permitted with restrictions
+"""
+
+def check_faq_relevance(prompt, faqs):
+    """Check if the prompt is related to any FAQ"""
+    for faq in faqs:
+        if any(word.lower() in faq['question'].lower() for word in prompt.split()):
+            return True
+    return False
+
 def get_chatbot_response(prompt, conversation_history, faqs_context):
-    """Get response from GPT model with FAQs context"""
+    """Get response from Gemini model with FAQs or general knowledge"""
     try:
-        messages = [
-            {"role": "system", "content": faqs_context}
-        ]
+        is_faq_related = check_faq_relevance(prompt, st.session_state.faqs)
         
-        # Limit conversation history to last 5 messages
+        if is_faq_related:
+            # Use FAQ context for NJ Transit specific questions
+            chat = model.start_chat(history=[])
+            chat.send_message(faqs_context)
+        else:
+            # Use Gemini's knowledge for non-FAQ questions
+            chat = model.start_chat(history=[])
+            chat.send_message("""You are a helpful NJ Transit assistant. For questions not covered in the FAQs, 
+            provide accurate information based on your knowledge about NJ Transit's current policies and services. 
+            Be specific and helpful while maintaining accuracy.""")
+        
+        # Add recent conversation history
         recent_history = conversation_history[-5:] if len(conversation_history) > 5 else conversation_history
-        
-        # Add conversation history
         for msg in recent_history:
             if isinstance(msg, dict) and "role" in msg and "content" in msg:
-                messages.append({
-                    "role": msg["role"],
-                    "content": msg["content"]
-                })
+                chat.send_message(msg["content"])
         
-        # Add user's new prompt
-        messages.append({"role": "user", "content": prompt})
-        
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=messages,
-            max_tokens=200,
-            temperature=0.7,
-            top_p=1.0,
-        )
-        return response.choices[0].message.content.strip()
+        response = chat.send_message(prompt)
+        return response.text
+
     except Exception as e:
         return f"I apologize, but I'm having trouble responding right now. Please try again later. Error: {str(e)}"
+
 # Initialize session states
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
 if "faqs" not in st.session_state:
     st.session_state.faqs = load_faqs()
+
+if "faqs_context" not in st.session_state:
     if st.session_state.faqs:
         st.session_state.faqs_context = create_context_from_faqs(st.session_state.faqs)
     else:
         st.session_state.faqs_context = "You are an NJ Transit support assistant. Please provide general help."
-# ... (previous imports and config remain the same)
 
-# After the title and before the chat container, add example questions
+# Example questions
 st.markdown("""
 <div style='background-color: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;'>
     <h4 style='color: #0066cc; margin-bottom: 10px;'>Example questions you can ask:</h4>
@@ -169,7 +216,6 @@ st.markdown("""
 
 # Add a divider
 st.markdown("<hr>", unsafe_allow_html=True)
-
 
 # Main chat container
 container = st.container()

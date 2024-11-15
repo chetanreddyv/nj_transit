@@ -26,3 +26,9 @@ python-dateutil
 
 # Environment variables
 python-dotenv
+
+# transformers
+transformers
+
+# google.generativeai
+google.generativeai
