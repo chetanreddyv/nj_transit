@@ -32,7 +32,7 @@ Enhancing NJ Transit passenger experience with AI and machine learning:
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/yourusername/nj_transit_data_ru_hack.git
+   git clone https://github.com/yourusername/nj_transit.git
    cd nj_transit_data_ru_hack
    ```
 2. Install dependencies:
@@ -41,7 +41,7 @@ Enhancing NJ Transit passenger experience with AI and machine learning:
    ```
 3. Configure environment:
    ```bash
-   echo "OPENAI_API_KEY=your_api_key_here" > .env
+   echo "gemini_api=your_api_key_here" > .env
    ```
 4. Launch the app:
    ```bash
