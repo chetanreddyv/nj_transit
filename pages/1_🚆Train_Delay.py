@@ -39,6 +39,53 @@ with col1:
 with col2:
     st.markdown('<p class="responsive-title">NJ Transit Rail Delay Prediction 🚆</p>', unsafe_allow_html=True)
 
+# Define model performance metrics
+metrics = {
+    'Mean Absolute Error (MAE)': 1.87,
+    'Root Mean Squared Error (RMSE)': 4.67
+}
+
+# Add sidebar section with metrics and visual indicators
+st.sidebar.markdown("### Model Performance Metrics")
+
+# Display metrics with custom styling
+st.sidebar.markdown("""
+<style>
+    .metric-container {
+        padding: 10px;
+        border-radius: 5px;
+        margin: 5px 0;
+        background-color: #f0f2f6;
+    }
+    .metric-value {
+        font-size: 24px;
+        font-weight: bold;
+        color: #1E88E5;
+    }
+    .metric-label {
+        font-size: 14px;
+        color: #424242;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# Display each metric with custom formatting
+for metric_name, value in metrics.items():
+    st.sidebar.markdown(f"""
+    <div class="metric-container">
+        <div class="metric-label">{metric_name}</div>
+        <div class="metric-value">{value:.2f} minutes</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+# Add interpretation
+st.sidebar.markdown("""
+---
+**Model Accuracy Interpretation:**
+- MAE of 1.87 minutes indicates average prediction error
+- RMSE of 4.67 minutes shows spread of prediction errors
+""")
+
 # Station dictionary
 stations = {'Newark Penn Station': 107, 'Union': 38105, 'Roselle Park': 31, 'Cranford': 32, 'Westfield': 155, 'Fanwood': 44, 'Netherwood': 102, 'Plainfield': 120, 'Dunellen': 36, 'Bound Brook': 21, 'Bridgewater': 24, 'Somerville': 138, 'New York Penn Station': 105, 'Secaucus Upper Lvl': 38187, 'Newark Airport': 37953, 'Elizabeth': 41, 'Linden': 70, 'Rahway': 127, 'Metropark': 83, 'Metuchen': 84, 'Edison': 38, 'New Brunswick': 103, 'Princeton Junction': 125, 'Hamilton': 32905, 'Philadelphia': 1, 'Trenton': 148, 'Princeton': 124, 'North Elizabeth': 109, 'Avenel': 11, 'Woodbridge': 158, 'Perth Amboy': 119, 'South Amboy': 139, 'Aberdeen-Matawan': 37169, 'Hazlet': 59, 'Middletown NJ': 85, 'Red Bank': 130, 'Little Silver': 73, 'Hoboken': 63, 'Secaucus Lower Lvl': 38174, 'Wood Ridge': 160, 'Teterboro': 146, 'Essex Street': 43, 'Anderson Street': 5, 'New Bridge Landing': 110, 'River Edge': 132, 'Oradell': 111, 'Emerson': 42, 'Westwood': 156, 'Hillsdale': 62, 'Woodcliff Lake': 159, 'Park Ridge': 114, 'Montvale': 90, 'Pearl River': 118, 'Nanuet': 100, 'Peapack': 117, 'Far Hills': 45, 'Bernardsville': 18, 'Basking Ridge': 12, 'Lyons': 76, 'Millington': 88, 'Stirling': 143, 'Gillette': 48, 'Berkeley Heights': 17, 'Murray Hill': 99, 'New Providence': 104, 'Summit': 145, 'Short Hills': 136, 'Millburn': 87, 'Maplewood': 81, 'South Orange': 140, 'Highland Avenue': 61, 'Orange': 112, 'Brick Church': 23, 'Newark Broad Street': 106, 'Dover': 35, 'Denville': 34, 'Mount Tabor': 94, 'Morris Plains': 91, 'Morristown': 92, 'Convent Station': 30, 'Madison': 77, 'Chatham': 27, 'East Orange': 37, 'Mountain Station': 97, 'Pennsauken': 43298, 'Cherry Hill': 28, 'Lindenwold': 71, 'Atco': 9, 'Hammonton': 55, 'Egg Harbor City': 39, 'Absecon': 2, 'Kingsland': 66, 'Lyndhurst': 75, 'Delawanna': 33, 'Passaic': 115, 'Clifton': 29, 'Paterson': 116, 'Hawthorne': 58, 'Glen Rock Main Line': 52, 'Ridgewood': 131, 'Waldwick': 151, 'Allendale': 3, 'Ramsey Main St': 128, 'Ramsey Route 17': 38417, 'Mahwah': 78, 'Long Branch': 74, 'Raritan': 129, 'Garwood': 47, 'Suffern': 144, 'Atlantic City Rail Terminal': 10, 'Bay Street': 14, 'Glen Ridge': 50, 'Bloomfield': 19, 'Watsessing Avenue': 154, 'Spring Valley': 142, 'Elberon': 40, 'Allenhurst': 4, 'Asbury Park': 8, 'Bradley Beach': 22, 'Belmar': 15, 'Spring Lake': 141, 'Manasquan': 79, 'Point Pleasant Beach': 122, 'Bay Head': 13, 'Gladstone': 49, 'Rutherford': 134, 'Wesmont': 43599, 'Garfield': 46, 'Plauderville': 121, 'Broadway Fair Lawn': 25, 'Radburn Fair Lawn': 126, 'Glen Rock Boro Hall': 51, 'Lake Hopatcong': 67, 'Mount Arlington': 39472, 'Mountain Lakes': 96, 'Boonton': 20, 'Towaco': 147, 'Lincoln Park': 69, 'Mountain View': 98, 'Wayne-Route 23': 39635, 'Little Falls': 72, 'Montclair State U': 38081, 'Montclair Heights': 89, 'Mountain Avenue': 95, 'Upper Montclair': 150, 'Watchung Avenue': 153, 'Walnut Street': 152, 'Hackettstown': 54, 'Mount Olive': 93, 'Netcong': 101, 'High Bridge': 60, 'Annandale': 6, 'Lebanon': 68, 'White House': 157, 'North Branch': 108, 'Port Jervis': 123, 'Otisville': 113, 'Middletown NY': 86, 'Campbell Hall': 26, 'Salisbury Mills-Cornwall': 135, 'Harriman': 57, 'Tuxedo': 149, 'Sloatsburg': 137, 'Jersey Avenue': 32906}
 
