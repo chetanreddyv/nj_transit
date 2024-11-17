@@ -2,3 +2,4 @@
 nj/
 .env
 .streamlit/secrets.toml
+data/
