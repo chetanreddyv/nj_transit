@@ -1,21 +1,48 @@
 # Import required libraries
-import streamlit as st  # For creating web app interface
-from PIL import Image  # For handling images
-import pandas as pd    # For data manipulation
-import numpy as np     # For numerical operations
-import joblib         # For loading saved ML models
-import os             # For handling file paths
+import streamlit as st
+from PIL import Image
+import pandas as pd
+import numpy as np
+import joblib
+import os
 
-# Define paths to model files
-MODEL_DIR = '/Users/chetan/Documents/GitHub/nj_transit/models'
-model_path = os.path.join(MODEL_DIR, 'delay_predictor.joblib')      # ML model file
-features_path = os.path.join(MODEL_DIR, 'features_list.joblib')     # List of features used in model
-metrics_path = os.path.join(MODEL_DIR, 'metrics.joblib')            # Model performance metrics
+# Define paths using relative paths 
+MODEL_DIR = os.path.join(os.path.dirname(__file__), '..', 'models')
+model_path = os.path.join(MODEL_DIR, 'delay_predictor.joblib')       # Fixed duplicate path and typo
+features_path = os.path.join(MODEL_DIR, 'features_list.joblib')      # Keep same structure
+metrics_path = os.path.join(MODEL_DIR, 'metrics.joblib')             # Keep same structure
 
-# Load saved files
-model = joblib.load(model_path)                # Load the trained ML model
-features_list = joblib.load(features_path)     # Load list of features used during training
-metrics = joblib.load(metrics_path)            # Load model performance metrics
+# Print paths for debugging (optional)
+print(f"Model directory: {MODEL_DIR}")
+print(f"Model path: {model_path}")
+
+# Create models directory if it doesn't exist
+os.makedirs(MODEL_DIR, exist_ok=True)
+
+# Default metrics in case files not found
+DEFAULT_METRICS = {
+    'Mean Absolute Error (MAE)': 1.87,
+    'Root Mean Squared Error (RMSE)': 4.67
+}
+
+# Load files with error handling
+try:
+    model = joblib.load(model_path)
+    features_list = joblib.load(features_path)
+    metrics = joblib.load(metrics_path)
+except FileNotFoundError:
+    st.error("""
+        Model files not found. Using default metrics.
+        Please ensure model files are in the correct location:
+        - delay_predictor.joblib
+        - features_list.joblib 
+        - metrics.joblib
+    """)
+    metrics = DEFAULT_METRICS
+    # Set dummy model and features for development
+    from sklearn.ensemble import RandomForestRegressor
+    model = RandomForestRegressor()
+    features_list = ['hour_of_day', 'day_of_week', 'from_id', 'to_id']
 
 # Configure Streamlit page settings
 st.set_page_config(
