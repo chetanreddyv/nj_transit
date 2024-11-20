@@ -1,8 +1,6 @@
 # Core data analysis and visualization
 pandas
 numpy
-
-# Plotting
 plotly
 
 # Web app framework
@@ -10,25 +8,15 @@ streamlit
 
 # Machine learning
 scikit-learn
+joblib
 
 # Data processing
 openpyxl
+pyarrow
 
 # AI/ML packages
-openai
-huggingface_hub
-
-# Statistical modeling
-statsmodels
-
-# Additional utilities
-python-dateutil
+google.generativeai
 
 # Environment variables
+python-dateutil
 python-dotenv
-
-# transformers
-transformers
-
-# google.generativeai
-google.generativeai
