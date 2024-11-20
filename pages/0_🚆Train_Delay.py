@@ -220,3 +220,53 @@ with col1:
 with col2:
     st.write(f"**To:** {to_station}")
     st.write(f"**Day:** {day_of_week}")
+# After the existing input summary code, add:
+
+# Display accuracy metrics
+st.write("### Model Accuracy")
+
+# Create three columns for metrics display
+acc_col1, acc_col2, acc_col3 = st.columns(3)
+
+with acc_col1:
+    mae_color = "#00ff00" if metrics['Mean Absolute Error (MAE)'] < 2 else "#ff9900"
+    st.markdown(f"""
+        <div style='padding: 10px; border-radius: 5px; background-color: #f0f2f6;'>
+            <p style='font-size: 14px; margin-bottom: 5px;'>Mean Absolute Error</p>
+            <p style='font-size: 24px; color: {mae_color}; margin: 0;'>
+                {metrics['Mean Absolute Error (MAE)']:.2f} min
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
+with acc_col2:
+    rmse_color = "#00ff00" if metrics['Root Mean Squared Error (RMSE)'] < 5 else "#ff9900"
+    st.markdown(f"""
+        <div style='padding: 10px; border-radius: 5px; background-color: #f0f2f6;'>
+            <p style='font-size: 14px; margin-bottom: 5px;'>Root Mean Square Error</p>
+            <p style='font-size: 24px; color: {rmse_color}; margin: 0;'>
+                {metrics['Root Mean Squared Error (RMSE)']:.2f} min
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
+with acc_col3:
+    accuracy = 100 - (metrics['Mean Absolute Error (MAE)'] / 30 * 100)  # Assuming 30 min max delay
+    acc_color = "#00ff00" if accuracy > 90 else "#ff9900"
+    st.markdown(f"""
+        <div style='padding: 10px; border-radius: 5px; background-color: #f0f2f6;'>
+            <p style='font-size: 14px; margin-bottom: 5px;'>Model Accuracy</p>
+            <p style='font-size: 24px; color: {acc_color}; margin: 0;'>
+                {accuracy:.1f}%
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
+# Add interpretation
+st.markdown("""
+---
+**Interpretation:**
+- MAE < 2 minutes: Excellent prediction accuracy
+- RMSE < 5 minutes: Good consistency in predictions
+- Accuracy > 90%: High reliability for delay estimates
+""")
