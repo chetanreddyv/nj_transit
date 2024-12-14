@@ -9,3 +9,7 @@ pyarrow
 google.generativeai
 python-dateutil
 python-dotenv
+plotly.express
+plotly.graph_objects 
+datetime
+calendar
