@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 from datetime import datetime
 from sklearn.ensemble import RandomForestRegressor
 import calendar
-
+import statsmodels.api as sm
 # Set page config
 st.set_page_config(layout="wide", page_title="NJ Transit Mechanical Cancellations Analysis")
 
