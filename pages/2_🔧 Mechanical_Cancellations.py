@@ -133,7 +133,7 @@ def main():
     # Display explanation image
     st.image('assets/output.png',
              caption='Distribution of Cancellation Categories',
-             use_column_width=True)
+             use_container_width=True)
     
     # Load data
     df = load_data()

@@ -19,7 +19,6 @@ print(f"Model path: {model_path}")
 # Create models directory if it doesn't exist
 os.makedirs(MODEL_DIR, exist_ok=True)
 
-
 # Load files
 model = joblib.load(model_path)
 features_list = joblib.load(features_path)
