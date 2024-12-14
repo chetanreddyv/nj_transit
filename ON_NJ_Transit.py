@@ -54,7 +54,7 @@ logo = Image.open(logo_path)
 
 # Banner and Title
 st.markdown('<div class="banner-container">', unsafe_allow_html=True)
-st.image(logo, use_column_width=True)
+st.image(logo, use_container_width=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown('<h1 class="main-title">Smart Journey Assistant 🚆</h1>', unsafe_allow_html=True)
