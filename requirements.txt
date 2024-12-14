@@ -1,22 +1,11 @@
-# Core data analysis and visualization
 pandas
 numpy
 plotly
-
-# Web app framework
-streamlit
-
-# Machine learning
-scikit-learn
+streamlit 
+scikit-learn == 1.5.2
 joblib
-
-# Data processing
 openpyxl
 pyarrow
-
-# AI/ML packages
 google.generativeai
-
-# Environment variables
 python-dateutil
 python-dotenv
