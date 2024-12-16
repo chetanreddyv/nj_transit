@@ -18,7 +18,7 @@ Enhancing NJ Transit passenger experience with AI and machine learning:
 
 ## ✨ Key Features
 
-- **Smart Delay Prediction**: 85%+ accuracy, real-time alerts
+- **Smart Delay Prediction**: Provides real-time delay estimates with MAE 1.39 and RMSE 1.84
 - **Mechanical Analytics**: Predictive maintenance, system monitoring
 - **AI Support Assistant**: 24/7 chat, schedule and fare assistance
 
@@ -28,13 +28,13 @@ Enhancing NJ Transit passenger experience with AI and machine learning:
 
 - Python 3.8+
 - Streamlit
-- OpenAI API key
+- Any LLM API Key or Local (Ollama)
 
 ### Installation
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/yourusername/nj_transit.git
+   git clone https://github.com/chetanreddyv/nj_transit.git
    cd nj_transit
    ```
 2. Install dependencies:
@@ -75,9 +75,9 @@ nj_transit/
 
 ## 🎯 Impact & Results
 
-- **85%+** delay prediction accuracy
+- **RMSE 1.84** delay prediction accuracy
 - **24/7** customer support
-- **30%** improvement in maintenance efficiency
+- improvement in maintenance efficiency
 
 ## 👥 Team
 
